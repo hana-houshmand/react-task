@@ -75,58 +75,57 @@ const projects = [
   },
 ];
 
+const deepCopy = JSON.parse(JSON.stringify(projects));
+
 function App() {
   const [isHidden, setIsHidden] = useState(false);
   const [sortDate, setSortDate] = useState("latest");
   const [category, setCategory] = useState("all");
-  const [status, setStatus] = useState(projects);
+  const [status, setStatus] = useState(deepCopy);
   const [activeButton, setActiveButton] = useState("1");
 
-  const deepCopy = JSON.parse(JSON.stringify(projects));
-
-  let sortedProject = projects;
+  let sortedProject = deepCopy;
 
   if (sortDate === "earliest") {
-    sortedProject = projects.sort(
-      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    sortedProject = deepCopy.sort(
+      (a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt))
     );
-    console.log(sortedProject);
   }
 
   if (sortDate === "latest") {
-    sortedProject = projects.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    sortedProject = deepCopy.sort(
+      (a, b) => Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
     );
   }
 
   if (category === "webDevelopment")
-    sortedProject = projects.filter(
+    sortedProject = deepCopy.filter(
       (p) => p.category.englishTitle === "web development"
     );
 
   if (category === "designing")
-    sortedProject = projects.filter(
+    sortedProject = deepCopy.filter(
       (p) => p.category.englishTitle === "design-ui/ux"
     );
   if (category === "all") sortedProject = status;
 
   const handleOpenStatus = (value) => {
     setActiveButton(value);
-    const sortedStatus = projects.filter((p) => p.status === "OPEN");
+    const sortedStatus = deepCopy.filter((p) => p.status === "OPEN");
     setStatus(sortedStatus);
   };
 
   const handleCloseStatus = (value) => {
     setActiveButton(value);
     console.log(value);
-    const sortedStatus = projects.filter((p) => p.status === "CLOSED");
+    const sortedStatus = deepCopy.filter((p) => p.status === "CLOSED");
     setStatus(sortedStatus);
   };
 
   const handleAllStatus = (value) => {
     setActiveButton(value);
     console.log(value);
-    setStatus(projects);
+    setStatus(deepCopy);
   };
 
   const handleClick = () => {
