@@ -1,5 +1,4 @@
 function Table({ projects }) {
- 
   return (
     <table>
       <thead>
@@ -9,7 +8,7 @@ function Table({ projects }) {
           <th>بودجه</th>
           <th>ددلاین</th>
           <th>وضعیت</th>
-          <th>عملیات</th>
+          <th>دسته بندی</th>
         </tr>
       </thead>
       <tbody>
@@ -29,8 +28,13 @@ function ShowProjects({ projects }) {
         <td>{p.title}</td>
         <td>{p.budget}</td>
         <td>{new Date(p.deadline).toLocaleString("fa-IR")}</td>
-        <td ><span className={p.status === "OPEN" ? "green" : "red"}> {p.status}</span></td>
-        <td>عملیات</td>
+        <td>
+          <span className={p.status === "OPEN" ? "green" : "red"}>
+            {" "}
+            {p.status}
+          </span>
+        </td>
+        <td>{p.category.title}</td>
       </tr>
     );
   });

@@ -6,6 +6,7 @@ import SortingBar, {
   SelectDate,
   StatusButton,
 } from "./components/SortingBar";
+import { stringify } from "postcss";
 
 const projects = [
   {
@@ -20,7 +21,7 @@ const projects = [
     },
     budget: 10000,
     tags: ["Ui/UX", "Figma"],
-    deadline: "2023-12-23T12:55:48.740Z",
+    deadline: "2024-12-23T12:55:48.740Z",
     createdAt: "2023-10-23T18:18:55.636Z",
     updatedAt: "2024-06-02T13:37:48.468Z",
   },
@@ -36,7 +37,7 @@ const projects = [
     },
     budget: 50000,
     tags: ["React", "Nodejs", "online shop"],
-    deadline: "2023-12-23T12:55:48.740Z",
+    deadline: "2022-12-23T12:55:48.740Z",
     createdAt: "2022-10-23T18:18:55.636Z",
     updatedAt: "2024-06-02T13:37:48.468Z",
   },
@@ -53,7 +54,7 @@ const projects = [
     },
     budget: 50000,
     tags: ["React", "Nodejs", "online shop"],
-    deadline: "2023-12-23T12:55:48.740Z",
+    deadline: "2021-12-23T12:55:48.740Z",
     createdAt: "2021-10-23T18:18:55.636Z",
     updatedAt: "2024-06-02T13:37:48.468Z",
   },
@@ -69,7 +70,7 @@ const projects = [
     },
     budget: 10000,
     tags: ["Ui/UX", "Figma"],
-    deadline: "2023-12-23T12:55:48.740Z",
+    deadline: "2020-12-23T12:55:48.740Z",
     createdAt: "2020-10-23T18:18:55.636Z",
     updatedAt: "2024-06-02T13:37:48.468Z",
   },
@@ -88,13 +89,13 @@ function App() {
 
   if (sortDate === "earliest") {
     sortedProject = deepCopy.sort(
-      (a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt))
+      (a, b) => Number(new Date(a.deadline)) - Number(new Date(b.deadline))
     );
   }
 
   if (sortDate === "latest") {
     sortedProject = deepCopy.sort(
-      (a, b) => Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
+      (a, b) => Number(new Date(b.deadline)) - Number(new Date(a.deadline))
     );
   }
 
@@ -117,14 +118,14 @@ function App() {
 
   const handleCloseStatus = (value) => {
     setActiveButton(value);
-    console.log(value);
+
     const sortedStatus = deepCopy.filter((p) => p.status === "CLOSED");
     setStatus(sortedStatus);
   };
 
   const handleAllStatus = (value) => {
     setActiveButton(value);
-    console.log(value);
+
     setStatus(deepCopy);
   };
 
