@@ -6,33 +6,29 @@ function SortingBar({ children }) {
 
 export default SortingBar;
 
-export function StatusButton({
-  onAllStatus,
-  onOpenStatus,
-  onCloseStatus,
-  activeButton,
-}) {
+export function StatusButton({ setStatus, status }) {
   return (
     <div className="status">
       <span>وضعیت</span>
+
       <button
-        value="1"
-        className={` button-secondary ${activeButton === "1" && "button-active"}`}
-        onClick={(e) => onAllStatus(e.target.value)}
+        value="all"
+        className={` button-secondary ${"all"=== status && "button-active"}`}
+        onClick={(e) => setStatus(e.target.value)}
       >
         همه
       </button>
       <button
-        value="2"
-        className={` button-secondary ${activeButton === "2" && "button-active"}`}
-        onClick={(e) => onOpenStatus(e.target.value)}
+        value="OPEN"
+        className={` button-secondary ${"OPEN" === status && "button-active"}`}
+        onClick={(e) => setStatus(e.target.value)}
       >
         باز
       </button>
       <button
-        value="3"
-        className={` button-secondary ${activeButton === "3" && "button-active"}`}
-        onClick={(e) => onCloseStatus(e.target.value)}
+        value="CLOSED"
+        className={` button-secondary ${ "CLOSED" === status && "button-active"}`}
+        onClick={(e) => setStatus(e.target.value)}
       >
         بسته
       </button>
@@ -55,8 +51,8 @@ export function SelectCategory({ category, setCategory }) {
   return (
     <div>
       <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="webDevelopment">طراحی وب</option>
-        <option value="designing"> طراحی ui ux</option>
+        <option value="web development">طراحی وب</option>
+        <option value="design-ui/ux"> طراحی ui ux</option>
         <option value="all">همه</option>
       </select>
     </div>

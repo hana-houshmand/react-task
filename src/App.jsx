@@ -6,7 +6,8 @@ import SortingBar, {
   SelectDate,
   StatusButton,
 } from "./components/SortingBar";
-import { stringify } from "postcss";
+
+
 
 const projects = [
   {
@@ -76,58 +77,53 @@ const projects = [
   },
 ];
 
-const deepCopy = JSON.parse(JSON.stringify(projects));
-
 function App() {
   const [isHidden, setIsHidden] = useState(false);
   const [sortDate, setSortDate] = useState("latest");
   const [category, setCategory] = useState("all");
-  const [status, setStatus] = useState(deepCopy);
-  const [activeButton, setActiveButton] = useState("1");
+  const [status, setStatus] = useState("all");
 
-  let sortedProject = deepCopy;
+  const handleSortDate = (a, b) => {
+    switch (sortDate) {
+      case "earliest":
+        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+      case "latest":
+        return new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
 
-  if (sortDate === "earliest") {
-    sortedProject = deepCopy.sort(
-      (a, b) => Number(new Date(a.deadline)) - Number(new Date(b.deadline))
-    );
-  }
-
-  if (sortDate === "latest") {
-    sortedProject = deepCopy.sort(
-      (a, b) => Number(new Date(b.deadline)) - Number(new Date(a.deadline))
-    );
-  }
-
-  if (category === "webDevelopment")
-    sortedProject = deepCopy.filter(
-      (p) => p.category.englishTitle === "web development"
-    );
-
-  if (category === "designing")
-    sortedProject = deepCopy.filter(
-      (p) => p.category.englishTitle === "design-ui/ux"
-    );
-  if (category === "all") sortedProject = status;
-
-  const handleOpenStatus = (value) => {
-    setActiveButton(value);
-    const sortedStatus = deepCopy.filter((p) => p.status === "OPEN");
-    setStatus(sortedStatus);
+      default:
+        throw new Error("sorting does not exit");
+    }
   };
 
-  const handleCloseStatus = (value) => {
-    setActiveButton(value);
+  const filteredData = projects
+    .filter((p) => (status === "all" ? true : p.status == status))
+    .filter((p) =>
+      category === "all" ? true : p.category.englishTitle == category
+    )
+    .sort(handleSortDate);
 
-    const sortedStatus = deepCopy.filter((p) => p.status === "CLOSED");
-    setStatus(sortedStatus);
-  };
+  // if (sortDate === "earliest") {
+  //   sortedProject = deepCopy.sort(
+  //     (a, b) => Number(new Date(a.deadline)) - Number(new Date(b.deadline))
+  //   );
+  // }
 
-  const handleAllStatus = (value) => {
-    setActiveButton(value);
+  // if (sortDate === "latest") {
+  //   sortedProject = deepCopy.sort(
+  //     (a, b) => Number(new Date(b.deadline)) - Number(new Date(a.deadline))
+  //   );
+  // }
 
-    setStatus(deepCopy);
-  };
+  // if (category === "webDevelopment")
+  //   sortedProject = deepCopy.filter(
+  //     (p) => p.category.englishTitle === "web development"
+  //   );
+
+  // if (category === "designing")
+  //   sortedProject = deepCopy.filter(
+  //     (p) => p.category.englishTitle === "design-ui/ux"
+  //   );
+  // if (category === "all") sortedProject = status;
 
   const handleClick = () => {
     setIsHidden(true);
@@ -143,19 +139,14 @@ function App() {
       <div>
         {isHidden ? (
           <SortingBar>
-            <StatusButton
-              activeButton={activeButton}
-              onAllStatus={handleAllStatus}
-              onCloseStatus={handleCloseStatus}
-              onOpenStatus={handleOpenStatus}
-            />
+            <StatusButton setStatus={setStatus} status={status} />
             <SelectDate sortDate={sortDate} setSortDate={setSortDate} />
             <SelectCategory category={category} setCategory={setCategory} />
           </SortingBar>
         ) : (
           ""
         )}
-        {isHidden ? <Table projects={sortedProject} /> : ""}
+        {isHidden ? <Table projects={filteredData} /> : ""}
       </div>
     </>
   );

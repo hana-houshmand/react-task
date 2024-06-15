@@ -21,7 +21,8 @@ function Table({ projects }) {
 export default Table;
 
 function ShowProjects({ projects }) {
-  return projects.map((p) => {
+  const projectFlat = [...projects].flat();
+  return projectFlat.map((p) => {
     return (
       <tr key={p._id}>
         <td>{p._id}</td>
